@@ -35,6 +35,19 @@ class TimestampBasedIdGeneratorTest {
     }
 
     @Test
+    void ID생성_시점을_연속된_시간에는_ID값이_단조_증가한다() {
+        final var basedEpoch = Instant.parse("2025-01-01T00:00:00Z");
+        final var sut = new TimestampBasedIdGenerator(basedEpoch);
+
+        final var id1 = sut.generate(basedEpoch.plusMillis(100));
+        final var id2 = sut.generate(basedEpoch.plusMillis(200));
+        final var id3 = sut.generate(basedEpoch.plusMillis(300));
+
+        assertThat(id1).isLessThan(id2);
+        assertThat(id2).isLessThan(id3);
+    }
+
+    @Test
     void ID_생성시점이_기준시점_보다_이전일경우_예외를_발생시킨다() {
         final var basedEpoch = Instant.parse("2025-01-01T00:00:00Z");
         final var sut = new TimestampBasedIdGenerator(basedEpoch);
