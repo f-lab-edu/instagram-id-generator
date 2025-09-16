@@ -9,7 +9,18 @@ public final class TimestampBasedIdGenerator {
         this.basedEpoch = basedEpoch;
     }
 
-    public Long generate(final Instant baseTime) {
-        return baseTime.toEpochMilli() - basedEpoch.toEpochMilli();
+    public long generate(final Instant currentInstant) {
+        verifyEarlierThanBaseEpoch(currentInstant);
+        return timeDifferenceMillis(currentInstant);
+    }
+
+    private long timeDifferenceMillis(final Instant currentInstant) {
+        return currentInstant.toEpochMilli() - basedEpoch.toEpochMilli();
+    }
+
+    private void verifyEarlierThanBaseEpoch(final Instant currentInstant) {
+        if (currentInstant.isBefore(basedEpoch)) {
+            throw new IllegalArgumentException("현재 시간은 기준 시간보다 이전일 수 없습니다.");
+        }
     }
 }

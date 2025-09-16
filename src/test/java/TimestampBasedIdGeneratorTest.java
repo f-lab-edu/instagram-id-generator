@@ -31,4 +31,16 @@ class TimestampBasedIdGeneratorTest {
 
         assertThat(id).isEqualTo(1000L);
     }
+
+    @Test
+    void ID_생성시점이_기준시점_보다_이전일경우_예외를_발생시킨다() {
+        final var basedEpoch = Instant.parse("2025-01-01T00:00:00Z");
+        final var sut = new TimestampBasedIdGenerator(basedEpoch);
+
+        final var basedEpochBefore = basedEpoch.minusSeconds(1);
+
+        assertThatThrownBy(() -> sut.generate(basedEpochBefore))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("현재 시간은 기준 시간보다 이전일 수 없습니다.");
+    }
 }
