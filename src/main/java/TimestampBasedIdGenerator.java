@@ -8,8 +8,7 @@ public final class TimestampBasedIdGenerator {
     private final Instant basedEpoch;
 
     public TimestampBasedIdGenerator(final Instant basedEpoch) {
-        Objects.requireNonNull(Objects.requireNonNull(basedEpoch));
-        this.basedEpoch = basedEpoch;
+        this.basedEpoch = Objects.requireNonNull(basedEpoch);
     }
 
     public long generate(final Instant currentInstant) {
