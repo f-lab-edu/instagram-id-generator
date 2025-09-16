@@ -2,6 +2,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import org.junit.jupiter.api.Test;
 
 class TimestampBasedIdGeneratorTest {
@@ -73,5 +75,16 @@ class TimestampBasedIdGeneratorTest {
                 .hasMessageContaining("시간 차이")
                 .hasMessageContaining("최대 사용 기간")
                 .hasMessageContaining("초과");
+    }
+
+    @Test
+    void 기준_시간은_LocalDateTime으로_설정할_수_있다() {
+        final var basedDateTime = LocalDateTime.of(2025, 1, 1, 0, 0, 0);
+        final var basedEpoch = basedDateTime.toInstant(ZoneOffset.UTC);
+        final var sut = TimestampBasedIdGenerator.referenceDateTime(basedDateTime);
+
+        var target = new TimestampBasedIdGenerator(basedEpoch);
+
+        assertThat(sut).isEqualTo(target);
     }
 }
