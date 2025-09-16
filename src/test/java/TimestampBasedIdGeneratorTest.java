@@ -43,4 +43,35 @@ class TimestampBasedIdGeneratorTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("현재 시간은 기준 시간보다 이전일 수 없습니다.");
     }
+
+    @Test
+    void ID값_생성은_최대_41비트다() {
+        final var maxBits = 41;
+        final var maxDifferenceMillis = (1L << maxBits) - 1;
+
+        final var basedEpoch = Instant.parse("2025-01-01T00:00:00Z");
+        final var sut = new TimestampBasedIdGenerator(basedEpoch);
+
+        final var basedEpochAfterMax = basedEpoch.plusMillis(maxDifferenceMillis);
+        final var id = sut.generate(basedEpochAfterMax);
+
+        assertThat(id).isEqualTo(maxDifferenceMillis);
+    }
+
+    @Test
+    void 최대_사용기간_초과시_예외를_발생시킨다() {
+        final var maxBits = 41;
+        final var maxDifferenceMillis = (1L << maxBits) - 1;
+
+        final var basedEpoch = Instant.parse("2025-01-01T00:00:00Z");
+        final var sut = new TimestampBasedIdGenerator(basedEpoch);
+
+        final var overMaxDifferenceMillis = basedEpoch.plusMillis(maxDifferenceMillis + 1);
+
+        assertThatThrownBy(() -> sut.generate(overMaxDifferenceMillis))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("시간 차이")
+                .hasMessageContaining("최대 사용 기간")
+                .hasMessageContaining("초과");
+    }
 }
