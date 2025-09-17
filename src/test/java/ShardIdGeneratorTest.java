@@ -17,4 +17,11 @@ class ShardIdGeneratorTest {
         assertThatThrownBy(() -> ShardIdGenerator.from(instanceIdentifier))
                 .isInstanceOf(IllegalArgumentException.class);
     }
+
+    @ParameterizedTest
+    @ValueSource(ints = {0, 8191})
+    void 샤드_ID가_13비트_범위내_값이다(final int instanceIdentifier) {
+        final var generator = ShardIdGenerator.from(instanceIdentifier);
+        assertThat(generator.generate()).isEqualTo(instanceIdentifier);
+    }
 }

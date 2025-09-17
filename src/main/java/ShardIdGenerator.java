@@ -13,6 +13,10 @@ public final class ShardIdGenerator {
         return new ShardIdGenerator(instanceIdentifier);
     }
 
+    public long generate() {
+        return instanceIdentifier;
+    }
+
     private static void verifyShardIdRange(final int shardId) {
         if (shardId < 0 || shardId > MAX_SHARD_ID) {
             final var errorMessage = """
@@ -21,5 +25,4 @@ public final class ShardIdGenerator {
             throw new IllegalArgumentException(errorMessage);
         }
     }
-
 }
