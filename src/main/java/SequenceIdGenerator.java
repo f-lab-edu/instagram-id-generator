@@ -20,4 +20,8 @@ public class SequenceIdGenerator {
             throw new IllegalArgumentException("인스턴스 식별자는 10비트 이내이어야 한다");
         }
     }
+
+    public long generate(final long timestamp, final int shardInstanceIdentifier) {
+        return sequenceGroup.sequence(timestamp, shardInstanceIdentifier);
+    }
 }
