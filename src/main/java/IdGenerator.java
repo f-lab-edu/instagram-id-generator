@@ -15,7 +15,7 @@ public class IdGenerator {
         this.sequenceIdGenerator = sequenceIdGenerator;
     }
 
-    public long generate(final Instant timestamp) {
+    public long generateId(final Instant timestamp) {
         final var timestampId = timestampBasedIdGenerator.generate(timestamp);
         final var shardId = shardIdGenerator.generate();
         final var sequenceId = sequenceIdGenerator.generate(timestamp.toEpochMilli(), shardId - 1);

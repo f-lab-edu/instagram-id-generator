@@ -1,5 +1,3 @@
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +19,7 @@ class IdGeneratorTest {
 
         final var sut = new IdGenerator(timestampBasedIdGenerator,  shardIdGenerator, sequenceIdGenerator);
 
-        assertThat(sut.generate(timestamp)).isEqualTo(22468047667201025L);
+        assertThat(sut.generateId(timestamp)).isEqualTo(22468047667201025L);
     }
 
     private Instant instant(LocalDateTime localDateTime) {
