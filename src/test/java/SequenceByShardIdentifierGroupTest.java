@@ -1,6 +1,11 @@
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.Executors;
+
 import static org.assertj.core.api.Assertions.*;
 
 class SequenceByShardIdentifierGroupTest {
@@ -55,5 +60,37 @@ class SequenceByShardIdentifierGroupTest {
         assertThatThrownBy(() -> sut.sequence(1L, instanceId))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("과거의 시간대입니다.");
+    }
+
+    @Test
+    @DisplayName("동시성 환경에서 중복 시퀀스가 생성되지 않는다")
+    void concurrent_sequence_generation() throws InterruptedException {
+        final var sut = SequenceByShardIdentifierGroup.from(1);
+        final var timestamp = System.currentTimeMillis();
+        final var instanceId = 0;
+        final var threadCount = 10_000;
+        final var sequences = ConcurrentHashMap.<Long>newKeySet();
+
+        final var barrier = new CyclicBarrier(threadCount);
+        final var latch = new CountDownLatch(threadCount);
+
+        try (var executor = Executors.newFixedThreadPool(threadCount)) {
+            for (int i = 0; i < threadCount; i++) {
+                executor.submit(() -> {
+                    try {
+                        barrier.await();
+                        sequences.add(sut.sequence(timestamp, instanceId));
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    } finally {
+                        latch.countDown();
+                    }
+                });
+            }
+
+            latch.await();
+        }
+
+        assertThat(sequences).hasSize(threadCount);
     }
 }

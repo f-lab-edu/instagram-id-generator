@@ -17,7 +17,8 @@ public record SequenceByShardIdentifierGroup(
     }
 
     private static ConcurrentHashMap<Long, SequenceByTimestamp> sequenceByShardIdentifierGroupValue(
-            final long instanceIdentifierCount) {
+            final long instanceIdentifierCount
+    ) {
         return LongStream.range(0, instanceIdentifierCount)
                 .boxed()
                 .collect(Collectors.toMap(
@@ -49,23 +50,25 @@ public record SequenceByShardIdentifierGroup(
         }
 
         public long sequence(final long timestamp) {
-            final long lastTimestamp = lastTimestampValue.get();
-            verifyPastTimestamp(lastTimestamp, timestamp);
-            if (lastTimestamp < timestamp) {
-                this.initial(timestamp);
+            while (true) {
+                final long lastTimestamp = lastTimestampValue.get();
+                verifyPastTimestamp(lastTimestamp, timestamp);
+
+                if (lastTimestamp < timestamp) {
+                    if (lastTimestampValue.compareAndSet(lastTimestamp, timestamp)) {
+                        sequenceValue.set(SEQUENCE_INITIALIZE);
+                        return sequenceValue.incrementAndGet();
+                    }
+                } else {
+                    return sequenceValue.incrementAndGet();
+                }
             }
-            return sequenceValue.incrementAndGet();
         }
 
         private void verifyPastTimestamp(long lastTimestamp, long timestamp) {
             if (lastTimestamp > timestamp) {
                 throw new IllegalArgumentException("과거의 시간대입니다.");
             }
-        }
-
-        private void initial(final long timestamp) {
-            lastTimestampValue.set(timestamp);
-            sequenceValue.set(SEQUENCE_INITIALIZE);
         }
     }
 }
