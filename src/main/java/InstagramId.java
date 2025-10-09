@@ -66,4 +66,18 @@ public final class InstagramId {
         id |= sequence;
         return id;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        InstagramId that = (InstagramId) o;
+        return idValue() == that.idValue();
+    }
+
+    @Override
+    public int hashCode() {
+        return Long.hashCode(idValue());
+    }
 }
