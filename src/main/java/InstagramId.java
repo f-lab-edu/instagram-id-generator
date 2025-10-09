@@ -42,6 +42,16 @@ public final class InstagramId {
         return result;
     }
 
+    public static long makeRawId(
+            final long timestamp,
+            final long shardId,
+            final long sequence,
+            final int shardIdBits,
+            final int sequenceBits
+    ) {
+        return combine(timestamp, shardId, sequence, shardIdBits, sequenceBits);
+    }
+
     private static long combine(
             final long timestamp,
             final long shardId,
