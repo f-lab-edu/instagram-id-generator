@@ -2,23 +2,23 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 
 public record SequenceByShardIdentifierGroup(
-        Map<Integer, SequenceByTimestamp> value
+        Map<Long, SequenceByTimestamp> value
 ) {
     private static final long SEQUENCE_INITIALIZE = 0L;
     private static final long TIMESTAMP_INITIALIZE = -1L;
 
-    public static SequenceByShardIdentifierGroup from(final int instanceIdentifierCount) {
+    public static SequenceByShardIdentifierGroup from(final long instanceIdentifierCount) {
         return new SequenceByShardIdentifierGroup(
                 sequenceByShardIdentifierGroupValue(instanceIdentifierCount)
         );
     }
 
-    private static ConcurrentHashMap<Integer, SequenceByTimestamp> sequenceByShardIdentifierGroupValue(
-            final int instanceIdentifierCount) {
-        return IntStream.range(0, instanceIdentifierCount)
+    private static ConcurrentHashMap<Long, SequenceByTimestamp> sequenceByShardIdentifierGroupValue(
+            final long instanceIdentifierCount) {
+        return LongStream.range(0, instanceIdentifierCount)
                 .boxed()
                 .collect(Collectors.toMap(
                         i -> i,
@@ -28,7 +28,7 @@ public record SequenceByShardIdentifierGroup(
                 ));
     }
 
-    public long sequence(final long timestamp, int instanceIdentifier) {
+    public long sequence(final long timestamp, long instanceIdentifier) {
         if (!value.containsKey(instanceIdentifier)) {
             throw new IllegalArgumentException("인스턴스 식별자가 포함되어 있지 않습니다.");
         }

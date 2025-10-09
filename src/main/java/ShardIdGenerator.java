@@ -17,6 +17,10 @@ public final class ShardIdGenerator {
         return instanceIdentifier;
     }
 
+    public long allocatedBits() {
+        return SHARD_ID_BITS;
+    }
+
     private static void verifyShardIdRange(final int shardId) {
         if (shardId < 0 || shardId > MAX_SHARD_ID) {
             final var errorMessage = """

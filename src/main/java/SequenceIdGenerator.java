@@ -15,13 +15,17 @@ public class SequenceIdGenerator {
         );
     }
 
+    public long allocatedBits() {
+        return SEQUENCE_BITS;
+    }
+
     private static void verifyInstanceIdentifierCount(int instanceIdentifierCount) {
         if (instanceIdentifierCount < 0 || instanceIdentifierCount > MAX_SEQUENCE) {
             throw new IllegalArgumentException("인스턴스 식별자는 10비트 이내이어야 한다");
         }
     }
 
-    public long generate(final long timestamp, final int shardInstanceIdentifier) {
+    public long generate(final long timestamp, final long shardInstanceIdentifier) {
         return sequenceGroup.sequence(timestamp, shardInstanceIdentifier);
     }
 }
