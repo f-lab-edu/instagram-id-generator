@@ -67,6 +67,18 @@ public final class InstagramId {
         return id;
     }
 
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public long getShardId() {
+        return shardId;
+    }
+
+    public long getSequence() {
+        return sequence;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) {
