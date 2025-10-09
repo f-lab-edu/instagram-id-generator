@@ -19,7 +19,7 @@ class IdGeneratorTest {
 
         final var sut = new IdGenerator(timestampBasedIdGenerator,  shardIdGenerator, sequenceIdGenerator);
 
-        assertThat(sut.generateId(timestamp)).isEqualTo(22468047667201025L);
+        assertThat(sut.generateId(timestamp)).isEqualTo(InstagramId.from(22468047667201025L));
     }
 
     private Instant instant(LocalDateTime localDateTime) {
