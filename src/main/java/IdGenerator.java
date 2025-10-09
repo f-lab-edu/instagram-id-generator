@@ -15,20 +15,20 @@ public class IdGenerator {
         this.sequenceIdGenerator = sequenceIdGenerator;
     }
 
-    public long generateId(final Instant timestamp) {
+    public InstagramId generateId(final Instant timestamp) {
         final var timestampId = timestampBasedIdGenerator.generate(timestamp);
         final var shardId = shardIdGenerator.generate();
         final var sequenceId = sequenceIdGenerator.generate(timestamp.toEpochMilli(), shardId - 1);
         return combine(timestampId, shardId, sequenceId);
     }
 
-    private long combine(final long timestampId, final long shardId, final long sequenceId) {
+    private InstagramId combine(final long timestampId, final long shardId, final long sequenceId) {
         final var allocatedShardIdBits = shardIdGenerator.allocatedBits();
         final var allocatedSequenceIdBits = sequenceIdGenerator.allocatedBits();
 
         var id = timestampId << (allocatedShardIdBits + allocatedSequenceIdBits);
         id |= shardId << allocatedSequenceIdBits;
         id |= sequenceId;
-        return id;
+        return InstagramId.from(id);
     }
 }
