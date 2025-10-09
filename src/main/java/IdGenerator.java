@@ -18,7 +18,7 @@ public class IdGenerator {
     public InstagramId generateId(final Instant timestamp) {
         final var timestampId = timestampBasedIdGenerator.generate(timestamp);
         final var shardId = shardIdGenerator.generate();
-        final var sequenceId = sequenceIdGenerator.generate(timestamp.toEpochMilli(), shardId - 1);
+        final var sequenceId = sequenceIdGenerator.generate(timestamp.toEpochMilli(), shardId);
         return InstagramId.of(
                 timestampId,
                 shardId,
