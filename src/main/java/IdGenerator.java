@@ -19,21 +19,23 @@ public class IdGenerator {
         final var timestampId = timestampBasedIdGenerator.generate(timestamp);
         final var shardId = shardIdGenerator.generate();
         final var sequenceId = sequenceIdGenerator.generate(timestamp.toEpochMilli(), shardId - 1);
-        return InstagramId.from(combine(timestampId, shardId, sequenceId));
+        return InstagramId.of(
+                timestampId,
+                shardId,
+                sequenceId,
+                (int) shardIdGenerator.allocatedBits(),
+                (int) sequenceIdGenerator.allocatedBits()
+        );
     }
 
     public long makeRawId(long rawTimestamp, long shard, long sequence) {
         final var timestampId = timestampBasedIdGenerator.generate(rawTimestamp);
-        return combine(timestampId, shard, sequence);
-    }
-
-    private long combine(final long timestampId, final long shardId, final long sequenceId) {
-        final var allocatedShardIdBits = shardIdGenerator.allocatedBits();
-        final var allocatedSequenceIdBits = sequenceIdGenerator.allocatedBits();
-
-        var id = timestampId << (allocatedShardIdBits + allocatedSequenceIdBits);
-        id |= shardId << allocatedSequenceIdBits;
-        id |= sequenceId;
-        return id;
+        return InstagramId.makeRawId(
+                timestampId,
+                shard,
+                sequence,
+                (int) shardIdGenerator.allocatedBits(),
+                (int) sequenceIdGenerator.allocatedBits()
+        );
     }
 }

@@ -6,7 +6,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class IdGeneratorTest {
     @Test
@@ -18,8 +17,9 @@ class IdGeneratorTest {
         final var timestamp = instant(LocalDateTime.of(2025, 2, 1, 0, 0, 0));
 
         final var sut = new IdGenerator(timestampBasedIdGenerator,  shardIdGenerator, sequenceIdGenerator);
+        final var result = sut.generateId(timestamp);
 
-        assertThat(sut.generateId(timestamp)).isEqualTo(InstagramId.from(22468047667201025L));
+        assertThat(result.idValue()).isEqualTo(22468047667201025L);
     }
 
     @Test
