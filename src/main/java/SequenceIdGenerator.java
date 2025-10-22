@@ -7,7 +7,7 @@ final class SequenceIdGenerator {
         this.sequenceGroup = sequenceGroup;
     }
 
-    public static SequenceIdGenerator from(final int instanceIdentifierCount) {
+    public static SequenceIdGenerator from(final long instanceIdentifierCount) {
         verifyInstanceIdentifierCount(instanceIdentifierCount);
         return new SequenceIdGenerator(
                 SequenceByShardIdentifierGroup.from(instanceIdentifierCount)
@@ -18,7 +18,7 @@ final class SequenceIdGenerator {
         return COMPONENT.bitLength();
     }
 
-    private static void verifyInstanceIdentifierCount(int instanceIdentifierCount) {
+    private static void verifyInstanceIdentifierCount(long instanceIdentifierCount) {
         if (instanceIdentifierCount < 0 || instanceIdentifierCount > COMPONENT.maxValue()) {
             throw new IllegalArgumentException("인스턴스 식별자는 10비트 이내이어야 한다");
         }
