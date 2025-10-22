@@ -4,11 +4,15 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
-public record SequenceByShardIdentifierGroup(
-        Map<Long, SequenceByTimestamp> value
-) {
+class SequenceByShardIdentifierGroup{
     private static final long SEQUENCE_INITIALIZE = 0L;
     private static final long TIMESTAMP_INITIALIZE = -1L;
+
+    private final Map<Long, SequenceByTimestamp> value;
+
+    private SequenceByShardIdentifierGroup(Map<Long, SequenceByTimestamp> value) {
+        this.value = value;
+    }
 
     public static SequenceByShardIdentifierGroup from(final long instanceIdentifierCount) {
         return new SequenceByShardIdentifierGroup(
