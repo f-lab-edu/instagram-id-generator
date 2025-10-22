@@ -4,8 +4,7 @@ import java.time.ZoneOffset;
 import java.util.Objects;
 
 public final class TimestampBasedIdGenerator {
-    private static final long TIMESTAMP_BITS = 41L;
-    private static final long MAX_USE_PERIOD_TIME_MILLIS = (1L << TIMESTAMP_BITS) - 1;
+    private static final IdComponent ID_COMPONENT = IdComponent.TIMESTAMP;
 
     private final Instant basedEpoch;
 
@@ -41,10 +40,12 @@ public final class TimestampBasedIdGenerator {
     }
 
     private void verifyMaxUsePeriod(final long timeDifferenceMillis) {
-        if (timeDifferenceMillis > MAX_USE_PERIOD_TIME_MILLIS) {
+        long maxUsePeriod = ID_COMPONENT.maxValue();
+
+        if (timeDifferenceMillis > maxUsePeriod) {
             final var errorMessage = """
                     시간 차이 (%, d ms)가 최대 사용 기간 (%, d ms)을 초과했습니다.
-                    """.formatted(timeDifferenceMillis, MAX_USE_PERIOD_TIME_MILLIS);
+                    """.formatted(timeDifferenceMillis, maxUsePeriod);
             throw new IllegalArgumentException(errorMessage);
         }
     }
