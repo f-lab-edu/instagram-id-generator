@@ -1,6 +1,5 @@
 public class SequenceIdGenerator {
-    private static final int SEQUENCE_BITS = 10;
-    private static final long MAX_SEQUENCE = (1L << SEQUENCE_BITS) - 1;
+    private static final IdComponent COMPONENT = IdComponent.SEQUENCE;
 
     private final SequenceByShardIdentifierGroup sequenceGroup;
 
@@ -16,11 +15,11 @@ public class SequenceIdGenerator {
     }
 
     public long allocatedBits() {
-        return SEQUENCE_BITS;
+        return COMPONENT.bitLength();
     }
 
     private static void verifyInstanceIdentifierCount(int instanceIdentifierCount) {
-        if (instanceIdentifierCount < 0 || instanceIdentifierCount > MAX_SEQUENCE) {
+        if (instanceIdentifierCount < 0 || instanceIdentifierCount > COMPONENT.maxValue()) {
             throw new IllegalArgumentException("인스턴스 식별자는 10비트 이내이어야 한다");
         }
     }
