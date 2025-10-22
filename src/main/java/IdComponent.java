@@ -1,6 +1,6 @@
 import java.util.Arrays;
 
-public enum IdComponent {
+enum IdComponent {
     TIMESTAMP(41),
     SHARD(13),
     SEQUENCE(10);

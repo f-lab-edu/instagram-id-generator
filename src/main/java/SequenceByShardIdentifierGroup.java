@@ -4,7 +4,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
-class SequenceByShardIdentifierGroup{
+final class SequenceByShardIdentifierGroup{
     private static final long SEQUENCE_INITIALIZE = 0L;
     private static final long TIMESTAMP_INITIALIZE = -1L;
 

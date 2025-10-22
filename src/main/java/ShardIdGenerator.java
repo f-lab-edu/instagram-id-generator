@@ -1,4 +1,4 @@
-public final class ShardIdGenerator {
+final class ShardIdGenerator {
     private static final IdComponent ID_COMPONENT = IdComponent.SHARD;
 
     private final ShardIdAllocator shardIdAllocator;

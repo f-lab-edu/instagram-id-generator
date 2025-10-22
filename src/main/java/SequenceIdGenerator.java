@@ -1,4 +1,4 @@
-public class SequenceIdGenerator {
+final class SequenceIdGenerator {
     private static final IdComponent COMPONENT = IdComponent.SEQUENCE;
 
     private final SequenceByShardIdentifierGroup sequenceGroup;

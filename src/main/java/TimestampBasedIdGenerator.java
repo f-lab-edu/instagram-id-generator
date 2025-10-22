@@ -3,7 +3,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Objects;
 
-public final class TimestampBasedIdGenerator {
+final class TimestampBasedIdGenerator {
     private static final IdComponent ID_COMPONENT = IdComponent.TIMESTAMP;
 
     private final Instant basedEpoch;

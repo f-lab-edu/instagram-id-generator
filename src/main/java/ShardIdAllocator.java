@@ -1,4 +1,4 @@
 @FunctionalInterface
-public interface ShardIdAllocator {
+interface ShardIdAllocator {
     long allocate(final long maxAllowedShardId);
 }
