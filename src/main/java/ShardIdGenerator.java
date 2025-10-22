@@ -4,13 +4,9 @@ public final class ShardIdGenerator {
 
     private final int instanceIdentifier;
 
-    private ShardIdGenerator(final int instanceIdentifier) {
-        this.instanceIdentifier = instanceIdentifier;
-    }
-
-    public static ShardIdGenerator from(final int instanceIdentifier) {
+    public ShardIdGenerator(final int instanceIdentifier) {
         verifyShardIdRange(instanceIdentifier);
-        return new ShardIdGenerator(instanceIdentifier);
+        this.instanceIdentifier = instanceIdentifier;
     }
 
     public long generate() {

@@ -33,7 +33,6 @@ public record SequenceByShardIdentifierGroup(
         if (!value.containsKey(instanceIdentifier)) {
             throw new IllegalArgumentException("인스턴스 식별자가 포함되어 있지 않습니다.");
         }
-
         var sequenceByTimestamp = value.get(instanceIdentifier);
         return sequenceByTimestamp.sequence(timestamp);
     }
