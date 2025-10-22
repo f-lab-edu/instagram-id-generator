@@ -23,8 +23,8 @@ public class IdGenerator {
                 timestampId,
                 shardId,
                 sequenceId,
-                (int) shardIdGenerator.allocatedBits(),
-                (int) sequenceIdGenerator.allocatedBits()
+                shardIdGenerator.allocatedBits(),
+                sequenceIdGenerator.allocatedBits()
         );
     }
 

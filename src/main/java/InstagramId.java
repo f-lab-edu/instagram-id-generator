@@ -4,16 +4,16 @@ public final class InstagramId {
     private final long timestamp;
     private final long shardId;
     private final long sequence;
-    private final int shardIdBits;
-    private final int sequenceBits;
+    private final long shardIdBits;
+    private final long sequenceBits;
     private final AtomicReference<Long> idValue = new AtomicReference<>();
 
     private InstagramId(
             final long timestamp,
             final long shardId,
             final long sequence,
-            final int shardIdBits,
-            final int sequenceBits
+            final long shardIdBits,
+            final long sequenceBits
     ) {
         this.timestamp = timestamp;
         this.shardId = shardId;
@@ -26,8 +26,8 @@ public final class InstagramId {
             final long timestamp,
             final long shardId,
             final long sequence,
-            final int shardIdBits,
-            final int sequenceBits
+            final long shardIdBits,
+            final long sequenceBits
     ) {
         return new InstagramId(timestamp, shardId, sequence, shardIdBits, sequenceBits);
     }
@@ -56,10 +56,10 @@ public final class InstagramId {
             final long timestamp,
             final long shardId,
             final long sequence,
-            final int shardIdBits,
-            final int sequenceBits
+            final long shardIdBits,
+            final long sequenceBits
     ) {
-        final int timestampShift = shardIdBits + sequenceBits;
+        final long timestampShift = shardIdBits + sequenceBits;
 
         var id = timestamp << timestampShift;
         id |= shardId << sequenceBits;
