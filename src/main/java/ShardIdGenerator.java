@@ -1,23 +1,24 @@
 public final class ShardIdGenerator {
-    private static final long SHARD_ID_BITS = 13L;
-    private static final long MAX_SHARD_ID = (1L << SHARD_ID_BITS) - 1;
+    private static final int SHARD_ID_BITS = 13;
+    private static final int MAX_SHARD_ID = (1 << SHARD_ID_BITS) - 1;
 
-    private final int instanceIdentifier;
+    private final ShardIdAllocator shardIdAllocator;
 
-    public ShardIdGenerator(final int instanceIdentifier) {
-        verifyShardIdRange(instanceIdentifier);
-        this.instanceIdentifier = instanceIdentifier;
+    public ShardIdGenerator(final ShardIdAllocator shardIdAllocator) {
+        this.shardIdAllocator = shardIdAllocator;
     }
 
     public long generate() {
-        return instanceIdentifier;
+        var result = shardIdAllocator.allocate(MAX_SHARD_ID);
+        verifyShardIdRange(result);
+        return result;
     }
 
     public long allocatedBits() {
         return SHARD_ID_BITS;
     }
 
-    private static void verifyShardIdRange(final int shardId) {
+    private void verifyShardIdRange(final long shardId) {
         if (shardId < 0 || shardId > MAX_SHARD_ID) {
             final var errorMessage = """
                     샤드 ID(%d)는 0부터 %d 사이의 값이어야 한다
