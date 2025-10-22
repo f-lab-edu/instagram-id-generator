@@ -46,8 +46,8 @@ public final class InstagramId {
             final long timestamp,
             final long shardId,
             final long sequence,
-            final int shardIdBits,
-            final int sequenceBits
+            final long shardIdBits,
+            final long sequenceBits
     ) {
         return combine(timestamp, shardId, sequence, shardIdBits, sequenceBits);
     }
