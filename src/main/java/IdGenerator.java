@@ -5,7 +5,7 @@ public class IdGenerator {
     private final ShardIdGenerator shardIdGenerator;
     private final SequenceIdGenerator sequenceIdGenerator;
 
-    public IdGenerator(
+    IdGenerator(
             final TimestampBasedIdGenerator timestampBasedIdGenerator,
             final ShardIdGenerator shardIdGenerator,
             final SequenceIdGenerator sequenceIdGenerator
