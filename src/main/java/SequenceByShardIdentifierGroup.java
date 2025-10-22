@@ -23,7 +23,7 @@ final class SequenceByShardIdentifierGroup{
     private static ConcurrentHashMap<Long, SequenceByTimestamp> sequenceByShardIdentifierGroupValue(
             final long instanceIdentifierCount
     ) {
-        return LongStream.range(0, instanceIdentifierCount)
+        return LongStream.rangeClosed(0, instanceIdentifierCount)
                 .boxed()
                 .collect(Collectors.toMap(
                         i -> i,
