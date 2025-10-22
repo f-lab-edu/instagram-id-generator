@@ -29,6 +29,10 @@ public final class TimestampBasedIdGenerator {
         return generate(currentInstant);
     }
 
+    public long generate() {
+        return generate(Instant.now());
+    }
+
     private long timeDifferenceMillis(final Instant currentInstant) {
         return currentInstant.toEpochMilli() - basedEpoch.toEpochMilli();
     }
